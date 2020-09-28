@@ -2,6 +2,7 @@
   <div>
     <p>{{age}}</p>
     <button @click="myFn">按钮</button>
+    <input type="text" v-model="text" @click="myFn">
   </div>
 </template>
 
@@ -28,15 +29,36 @@ function myRef(value) {
     }
   });
 }
+function otherRef(val, delay=300) {
+  let timeOut
+  return customRef((track,trigger)=>{
+    return {
+      get() {
+        track()
+        return val
+      },
+      set(newVal){
+        clearTimeout(timeOut)
+        timeOut=setTimeout(() => {
+          val= newVal
+        }, delay);
+        trigger()
+      }
+
+    }
+  })
+}
 export default {
   name: 'App',
   setup() {
     // let age = ref(18); // reactive({value: 18})
     let age = myRef(18);
+    let text =otherRef(123)
     function myFn() {
       age.value += 1;
+      text.value = 6666
     }
-    return {age, myFn}
+    return {age, myFn,text}
   }
 }
 </script>

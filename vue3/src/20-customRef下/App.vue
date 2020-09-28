@@ -15,6 +15,8 @@ function myRef(value) {
   return customRef((track, trigger)=>{
     fetch(value)
             .then((res)=>{
+           
+
               return res.json();
             })
             .then((data)=>{
